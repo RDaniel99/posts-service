@@ -4,7 +4,6 @@ package models;
 import java.util.Date;
 import java.util.List;
 
-// TODO: See if we have to use annotations
 public class PostDetails {
 
     private String id;
