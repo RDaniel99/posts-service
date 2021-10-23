@@ -17,7 +17,7 @@ public class Post {
         this.hasForm = hasForm;
     }
 
-    public class PostBuilder {
+    public static class PostBuilder {
 
         private String id;
         private String userId;

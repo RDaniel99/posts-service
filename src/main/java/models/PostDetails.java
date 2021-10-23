@@ -26,7 +26,7 @@ public class PostDetails {
         this.createdDate = createdDate;
     }
 
-    public class PostDetailsBuilder {
+    public static class PostDetailsBuilder {
 
         private String id;
         private String postId;
