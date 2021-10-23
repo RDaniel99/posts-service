@@ -7,4 +7,6 @@ public enum ObjectCategory {
     PHONE,
 
     WALLET
+
+    // TODO: Research categories
 }
