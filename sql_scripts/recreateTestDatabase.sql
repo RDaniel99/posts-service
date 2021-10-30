@@ -28,6 +28,8 @@ CREATE TABLE postsdetails(
     FOREIGN KEY(post_id) REFERENCES posts(id)
 );
 
+-- Create forms table
+
 CREATE TABLE forms
 (
     id      INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
