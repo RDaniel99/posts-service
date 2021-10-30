@@ -24,7 +24,7 @@ public class FormAnswer {
 
     }
 
-    public class Builder {
+    public static class Builder {
 
         private FormAnswer formAnswerInstance;
 
