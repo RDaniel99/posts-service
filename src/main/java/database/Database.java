@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import static database.DatabaseUtils.*;
+
 public interface Database {
 
     Connection connection = getConnection();
@@ -14,8 +16,7 @@ public interface Database {
         try {
 
             Class.forName("com.mysql.jdbc.Driver");
-            return DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/lostandfound?characterEncoding=latin1&useConfigs=maxPerformance", "root", "password");
+            return DriverManager.getConnection(getConnectionURI(), getDbUser(), getDbPassword());
         }
         catch (Exception e) {
 
