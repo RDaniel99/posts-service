@@ -30,6 +30,7 @@ public class FormAnswer {
 
         public Builder() {
 
+            formAnswerInstance = new FormAnswer();
         }
 
         public Builder withQuestionId(String questionId) {
