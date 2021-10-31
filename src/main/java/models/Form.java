@@ -5,30 +5,30 @@ package models;
  */
 public class Form {
 
-    private String id;
+    private Integer id;
 
     /**
      * The id of the post the form is related with
      */
-    private String postId;
+    private Integer postId;
 
 
-    public String getPostId() {
+    public Integer getPostId() {
 
         return postId;
     }
 
-    public void setPostId(String postId) {
+    public void setPostId(Integer postId) {
 
         this.postId = postId;
     }
 
-    public String getId() {
+    public Integer getId() {
 
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
 
         this.id = id;
     }
