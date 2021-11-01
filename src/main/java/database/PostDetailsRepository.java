@@ -10,7 +10,7 @@ public class PostDetailsRepository implements Database, Repository<PostDetails> 
     }
 
     @Override
-    public PostDetails read(String id) {
+    public PostDetails read(Integer id) {
         return null;
     }
 
@@ -20,7 +20,7 @@ public class PostDetailsRepository implements Database, Repository<PostDetails> 
     }
 
     @Override
-    public boolean delete(String id) {
+    public boolean delete(Integer id) {
         return false;
     }
 }

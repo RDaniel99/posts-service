@@ -10,7 +10,7 @@ public class FormAnswerRepository implements Database, Repository<FormAnswer> {
     }
 
     @Override
-    public FormAnswer read(String id) {
+    public FormAnswer read(Integer id) {
         return null;
     }
 
@@ -20,7 +20,7 @@ public class FormAnswerRepository implements Database, Repository<FormAnswer> {
     }
 
     @Override
-    public boolean delete(String id) {
+    public boolean delete(Integer id) {
         return false;
     }
 }

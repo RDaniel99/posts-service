@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Objects;
+
 /**
  * A class that contains the structure and information af a Form
  */
@@ -12,6 +14,15 @@ public class Form {
      */
     private Integer postId;
 
+    public Form(){
+
+    }
+
+    public Form(Integer id, Integer postId) {
+
+        this.id = id;
+        this.postId = postId;
+    }
 
     public Integer getPostId() {
 
@@ -33,4 +44,16 @@ public class Form {
         this.id = id;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Form form = (Form) o;
+        return Objects.equals(id, form.id) && Objects.equals(postId, form.postId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, postId);
+    }
 }

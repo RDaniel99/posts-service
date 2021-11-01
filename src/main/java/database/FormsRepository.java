@@ -43,8 +43,30 @@ public class FormsRepository implements Database, Repository<Form> {
 
 
     @Override
-    public Form read(String id) {
-        return null;
+    public Form read(Integer id) {
+
+        Form form = new Form();
+
+        String createQuery = "SELECT * From forms WHERE id = ?";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+
+                form.setId(rs.getInt(1));
+                form.setPostId(rs.getInt(2));
+            }
+
+            stmt.close();
+        } catch (SQLException exception) {
+            //TO-DO: User Friendly message
+        }
+        return form;
     }
 
     @Override
@@ -53,7 +75,25 @@ public class FormsRepository implements Database, Repository<Form> {
     }
 
     @Override
-    public boolean delete(String id) {
-        return false;
+    public boolean delete(Integer id) {
+
+        String createQuery = "DELETE From forms WHERE id = ?";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, id);
+
+            int rs = stmt.executeUpdate();
+            if (rs == 0) {
+
+                return false;
+            }
+
+            stmt.close();
+        } catch (SQLException exception) {
+            //TO-DO: User Friendly message
+        }
+        return true;
     }
 }
