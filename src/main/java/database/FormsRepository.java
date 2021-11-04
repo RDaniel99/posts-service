@@ -11,7 +11,7 @@ public class FormsRepository implements Database, Repository<Form> {
     }
 
     @Override
-    public Form read(String id) {
+    public Form read(Integer id) {
         return null;
     }
 
@@ -21,7 +21,7 @@ public class FormsRepository implements Database, Repository<Form> {
     }
 
     @Override
-    public boolean delete(String id) {
+    public boolean delete(Integer id) {
         return false;
     }
 }
