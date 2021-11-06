@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-//To-do: modify this
-@WebServlet(value = "/api/forms/*")
+//TO-DO: I saw that you used query-params here. Should I also change it?
+@WebServlet(value = "/api/forms/get/*")
 public class ReadFormServlet extends HttpServlet {
 
     private ReadFormService service;

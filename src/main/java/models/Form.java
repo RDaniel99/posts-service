@@ -14,7 +14,7 @@ public class Form {
      */
     private Integer postId;
 
-    public Form(){
+    public Form() {
 
     }
 

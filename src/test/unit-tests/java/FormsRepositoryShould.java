@@ -1,7 +1,6 @@
 
 import database.FormsRepository;
 import models.Form;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -70,4 +69,15 @@ public class FormsRepositoryShould {
         assertEquals(FORM_ID, form.getId());
     }
 
+    @Test
+    public void deleteForm() throws SQLException {
+
+        // setup
+
+        // execute
+        Boolean result = repository.delete(FORM_ID);
+
+        // verify
+        assertEquals(true, result);
+    }
 }

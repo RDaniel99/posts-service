@@ -24,7 +24,6 @@ public class DeleteFormService implements Service {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        String pathInfo = ((HttpServletRequest) req).getPathInfo();
         String path = req.getPathInfo();
 
         Integer id = PathUtils.getEntityId(path);
@@ -33,4 +32,5 @@ public class DeleteFormService implements Service {
         PrintWriter out = resp.getWriter();
         out.print(result);
     }
+
 }

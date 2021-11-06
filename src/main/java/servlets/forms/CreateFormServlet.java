@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(value = "/api/forms")
+@WebServlet(value = "/api/forms/create")
 public class CreateFormServlet extends HttpServlet {
 
     private CreateFormService service;

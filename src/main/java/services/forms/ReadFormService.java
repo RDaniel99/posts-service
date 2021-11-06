@@ -24,7 +24,6 @@ public class ReadFormService implements Service {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        String pathInfo = ((HttpServletRequest) req).getPathInfo();
         String path = req.getPathInfo();
 
         Integer id = PathUtils.getEntityId(path);
