@@ -27,3 +27,36 @@ CREATE TABLE postsdetails(
     created_at timestamp default current_timestamp,
     FOREIGN KEY(post_id) REFERENCES posts(id)
 );
+
+-- Create form table
+
+CREATE TABLE forms
+(
+    id      INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    post_id INT(6) UNSIGNED NOT NULL,
+    FOREIGN KEY (post_id)
+        REFERENCES posts (id)
+        ON DELETE CASCADE
+);
+
+-- Create form question table
+CREATE TABLE formquestions
+(
+    id      INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    form_id INT(6) UNSIGNED NOT NULL,
+    content VARCHAR(2000),
+    FOREIGN KEY (form_id)
+        REFERENCES forms (id)
+        ON DELETE CASCADE
+);
+
+-- Create form answer table
+CREATE TABLE formanswer
+(
+    id          INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    question_id INT(6) UNSIGNED NOT NULL,
+    user_id     INT(6) UNSIGNED NOT NULL,
+    FOREIGN KEY (question_id)
+        REFERENCES formquestions (id)
+        ON DELETE CASCADE
+);
