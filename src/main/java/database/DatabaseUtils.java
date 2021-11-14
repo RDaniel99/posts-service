@@ -27,7 +27,7 @@ public class DatabaseUtils {
 
         builder.append("jdbc:mysql://localhost:3306/");
         appendDbName(builder);
-        builder.append("?characterEncoding=latin1&useConfigs=maxPerformance");
+        builder.append("?characterEncoding=latin1&useConfigs=maxPerformance&useSSL=false");
 
 
         return builder.toString();
