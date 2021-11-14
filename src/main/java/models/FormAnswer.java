@@ -8,7 +8,7 @@ public class FormAnswer {
     /**
      * The question this answer is associated with
      */
-    private String questionId;
+    private Integer questionId;
 
     /**
      * The user that answered to the question
@@ -19,6 +19,21 @@ public class FormAnswer {
      * The question content
      */
     private String content;
+
+    public Integer getQuestionId() {
+
+        return questionId;
+    }
+
+    public String getContent() {
+
+        return content;
+    }
+
+    public String getUserId() {
+
+        return userId;
+    }
 
     private FormAnswer() {
 
@@ -33,7 +48,7 @@ public class FormAnswer {
             formAnswerInstance = new FormAnswer();
         }
 
-        public Builder withQuestionId(String questionId) {
+        public Builder withQuestionId(Integer questionId) {
 
             formAnswerInstance.questionId = questionId;
             return this;

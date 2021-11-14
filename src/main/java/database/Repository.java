@@ -3,7 +3,7 @@ package database;
 public interface Repository<T> {
 
     T create(T object);
-    T read(String id);
+    T read(Integer id);
     T update(T object);
-    boolean delete(String id);
+    boolean delete(Integer id);
 }

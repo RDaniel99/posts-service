@@ -42,7 +42,7 @@ public class PostsRepository implements Database, Repository<Post> {
     }
 
     @Override
-    public Post read(String id) {
+    public Post read(Integer id) {
         return null;
     }
 
@@ -52,7 +52,7 @@ public class PostsRepository implements Database, Repository<Post> {
     }
 
     @Override
-    public boolean delete(String id) {
+    public boolean delete(Integer id) {
         return false;
     }
 }
