@@ -2,9 +2,7 @@ package services.formQuestions;
 
 import database.FormsQuestionsRepository;
 import mappers.FormQuestionMapper;
-import mappers.PostMapper;
 import models.FormQuestion;
-import models.Post;
 import services.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +20,7 @@ public class CreateFormQuestionService implements Service {
     }
 
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException{
 
         FormQuestion formQuestion = FormQuestionMapper.fromJsonToObject(req.getReader());
         formQuestion = formsQuestionsRepository.create(formQuestion);

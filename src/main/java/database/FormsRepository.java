@@ -1,5 +1,6 @@
 package database;
 
+import exception.FormReadException;
 import models.Form;
 
 import java.sql.*;
@@ -46,7 +47,7 @@ public class FormsRepository implements Database, Repository<Form> {
 
 
     @Override
-    public Form read(Integer id) {
+    public Form read(Integer id) throws FormReadException {
 
         Form form = null;
         String createQuery = String.format("SELECT * From %s WHERE %s = ?", DATABASE_NAME, FORMS_ID);
@@ -62,6 +63,10 @@ public class FormsRepository implements Database, Repository<Form> {
 
                 form = convertToForm(rs);
             }
+            else{
+
+                throw new FormReadException(FormReadException.Reason.FORM_NOT_FOUND);
+            }
 
             stmt.close();
         } catch (SQLException exception) {
@@ -73,7 +78,7 @@ public class FormsRepository implements Database, Repository<Form> {
 
     @Override
     public Form update(Form object) {
-        //TO-DO: Does it make sense to have this operation for forms, given the fact that we cannot change the is,
+        //TODO: Does it make sense to have this operation for forms, given the fact that we cannot change the is,
         // or reassign the port to other post?
         return null;
     }

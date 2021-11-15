@@ -1,6 +1,7 @@
 package services.forms;
 
 import database.FormsRepository;
+import exception.FormReadException;
 import mappers.FormMapper;
 import models.Form;
 import services.Service;
@@ -22,7 +23,7 @@ public class ReadFormService implements Service {
 
 
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, FormReadException {
 
         String path = req.getPathInfo();
 
