@@ -35,7 +35,7 @@ public class FormsQuestionsRepository implements Database, Repository<FormQuesti
     }
 
     @Override
-    public FormQuestion read(String id) {
+    public FormQuestion read(Integer id) {
         return null;
     }
 
@@ -45,7 +45,7 @@ public class FormsQuestionsRepository implements Database, Repository<FormQuesti
     }
 
     @Override
-    public boolean delete(String id) {
+    public boolean delete(Integer id) {
         return false;
     }
 }

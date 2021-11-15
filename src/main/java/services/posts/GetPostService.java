@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class CreatePostService implements Service {
+public class GetPostService implements Service {
 
     private PostsRepository repository;
 
-    public CreatePostService() {
+    public GetPostService() {
 
         this.repository = new PostsRepository();
     }
@@ -24,9 +24,10 @@ public class CreatePostService implements Service {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        // TODO: Add validation
-        Post post = PostMapper.fromJsonToObject(req.getReader());
-        post = repository.create(post);
+        // TODO: Validation
+        Integer id = Integer.parseInt(req.getParameter("id"));
+
+        Post post = repository.read(id);
 
         // TODO: This should be part of servlet, not service
         // TODO: To do in future, not now

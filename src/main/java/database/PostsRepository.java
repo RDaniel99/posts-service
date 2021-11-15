@@ -1,15 +1,24 @@
 package database;
 
+import exceptions.CrudException;
 import models.Post;
+import models.Status;
 
+import javax.ejb.LocalBean;
+import javax.ejb.Singleton;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
+// TODO: Implement Singleton pattern
 public class PostsRepository implements Database, Repository<Post> {
 
     private Connection connection;
     private final String queryInsertPost = "INSERT INTO posts(user_id, status, has_form) VALUES(%d, \"%s\", %b)";
+    private final String queryDeletePost = "DELETE FROM posts WHERE id=%d";
+    private final String querySelectPostById = "SELECT * FROM posts WHERE id=%d";
+    private final String queryUpdatePostById = "UPDATE posts SET %s WHERE id=%d";
 
     public PostsRepository() {
 
@@ -42,17 +51,120 @@ public class PostsRepository implements Database, Repository<Post> {
     }
 
     @Override
-    public Post read(String id) {
-        return null;
+    public Post read(Integer id) {
+
+        Post post = null;
+
+        try {
+            Statement stmt = connection.createStatement();
+
+            ResultSet rs = stmt.executeQuery(String.format(querySelectPostById, id));
+
+            if(rs.next()) {
+
+                post = convertToPost(rs);
+            }
+
+            stmt.close();
+        } catch(Exception ignored) {
+
+            return null;
+        }
+
+        return post;
+    }
+
+    private Post convertToPost(ResultSet rs) throws SQLException {
+
+        Integer id = rs.getInt("id");
+        Integer userId = rs.getInt("user_id");
+        Boolean hasForm = rs.getBoolean("has_form");
+        Status status = Status.valueOf(rs.getString("status"));
+
+        return new Post.PostBuilder(id, userId).hasForm(hasForm).withStatus(status).build();
     }
 
     @Override
     public Post update(Post object) {
+        // TODO: Should we change the signature with one that contains
+        // TODO: original and new object?
+
         return null;
     }
 
+    public Post update(Post originalPost, Post newPost) {
+
+        try {
+
+            String setStmt = generateSetString(originalPost, newPost);
+
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(String.format(queryUpdatePostById, setStmt, originalPost.getId()));
+
+        } catch (CrudException | SQLException ignored) {
+            // TODO: Create TranslatorHandler for exceptions
+            return originalPost;
+        }
+
+        return newPost;
+    }
+
+    private String generateSetString(Post originalPost, Post newPost) throws CrudException {
+
+        StringBuilder builder = new StringBuilder();
+        boolean appendComma = false;
+
+        if(newPost.getId() != null && !originalPost.getId().equals(newPost.getId())) {
+
+            // TODO: Put constants for messages
+            throw new CrudException("Id can not be changed");
+        }
+
+        if(newPost.getUserId() != null && !originalPost.getUserId().equals(newPost.getUserId())) {
+
+            // TODO: Put constants for messages
+            throw new CrudException("User Id can not be changed");
+        }
+
+        if(newPost.getStatus() != null && !originalPost.getStatus().equals(newPost.getStatus())) {
+
+            appendComma = true;
+            builder.append("status = ");
+            // TODO: Add Constant
+            builder.append("\"" + newPost.getStatus() + "\"");
+        }
+
+        if(newPost.getHasForm() != null && !originalPost.getHasForm().equals(newPost.getHasForm())) {
+
+            if(appendComma) {
+
+                builder.append(", ");
+            }
+
+            // TODO: Should we delete the Form if it changes from 1 to 0?
+            // TODO: Or keep it for future changes?
+            // TODO: To see, not mandatory right now
+            appendComma = true;
+            builder.append("has_form = ");
+            builder.append(newPost.getHasForm());
+        }
+
+        return builder.toString();
+    }
+
     @Override
-    public boolean delete(String id) {
-        return false;
+    public boolean delete(Integer id) {
+        try {
+            Statement stmt = connection.createStatement();
+
+            stmt.executeUpdate(String.format(queryDeletePost, id));
+
+            stmt.close();
+        } catch(Exception ignored) {
+
+            return false;
+        }
+
+        return true;
     }
 }

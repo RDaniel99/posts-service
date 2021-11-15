@@ -1,6 +1,5 @@
 package models;
 
-
 /**
  * A class that contains the structure and information af a Form
  */
