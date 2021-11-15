@@ -1,6 +1,5 @@
 package models;
 
-import aop.annotation.FormQuestionPayloadValidate;
 
 /**
  * A class that contains the structure and information af a Form
@@ -38,7 +37,8 @@ public class FormQuestion {
 
     public static class Builder {
 
-        private final FormQuestion formQuestionInstance;
+        public final FormQuestion formQuestionInstance;
+
 
         public Builder() {
 
