@@ -1,6 +1,6 @@
 package database;
 
-import exception.FormReadException;
+import exceptions.FormReadException;
 import models.Form;
 
 import java.sql.*;
@@ -8,11 +8,11 @@ import java.sql.*;
 import static constants.FormsDatabase.DATABASE_NAME;
 import static constants.FormsDatabase.FORMS_ID;
 
-public class FormsRepository implements Database, Repository<Form> {
+public class FormRepository implements Database, Repository<Form> {
 
     private Connection connection;
 
-    public FormsRepository() {
+    public FormRepository() {
 
         this.connection = Database.getConnection();
     }
@@ -77,7 +77,7 @@ public class FormsRepository implements Database, Repository<Form> {
     }
 
     @Override
-    public Form update(Form object) {
+    public Form update(Form originalObject, Form newObject) {
         //TODO: Does it make sense to have this operation for forms, given the fact that we cannot change the is,
         // or reassign the port to other post?
         return null;

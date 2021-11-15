@@ -17,7 +17,13 @@ public class FormQuestion {
      */
     private String content;
 
+    public Integer getId() {
+
+        return id;
+    }
+
     public String getContent() {
+
         return content;
     }
 
@@ -29,6 +35,7 @@ public class FormQuestion {
     public void setId(Integer id) {
         this.id = id;
     }
+
 
     private FormQuestion() {
 

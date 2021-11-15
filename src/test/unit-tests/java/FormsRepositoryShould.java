@@ -1,5 +1,5 @@
 
-import database.FormsRepository;
+import database.FormRepository;
 import models.Form;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ public class FormsRepositoryShould {
     ResultSet rs;
 
     @InjectMocks
-    FormsRepository repository = new FormsRepository();
+    FormRepository repository = new FormRepository();
 
     @BeforeEach
     public void setup() throws SQLException {
