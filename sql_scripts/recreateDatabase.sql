@@ -25,7 +25,9 @@ CREATE TABLE postsdetails(
     category ENUM("WALLET"),
     description VARCHAR(10000),
     created_at timestamp default current_timestamp,
-    FOREIGN KEY(post_id) REFERENCES posts(id)
+    FOREIGN KEY(post_id) 
+		REFERENCES posts(id)
+        ON DELETE CASCADE
 );
 
 -- Create form table
