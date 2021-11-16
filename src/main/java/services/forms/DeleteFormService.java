@@ -1,8 +1,6 @@
 package services.forms;
 
-import database.FormsRepository;
-import mappers.FormMapper;
-import models.Form;
+import database.FormRepository;
 import services.Service;
 import services.utils.PathUtils;
 
@@ -13,11 +11,11 @@ import java.io.PrintWriter;
 
 public class DeleteFormService implements Service {
 
-    private final FormsRepository repository;
+    private final FormRepository repository;
 
     public DeleteFormService() {
 
-        repository = new FormsRepository();
+        repository = new FormRepository();
     }
 
 

@@ -5,7 +5,6 @@ package models;
  */
 public class FormQuestion {
 
-
     private Integer id;
 
     /**
@@ -18,6 +17,11 @@ public class FormQuestion {
      */
     private String content;
 
+    public Integer getId() {
+
+        return id;
+    }
+
     public String getContent() {
 
         return content;
@@ -28,10 +32,10 @@ public class FormQuestion {
         return formId;
     }
 
-    public Integer getId() {
-
-        return id;
+    public void setId(Integer id) {
+        this.id = id;
     }
+
 
     private FormQuestion() {
 
@@ -39,7 +43,8 @@ public class FormQuestion {
 
     public static class Builder {
 
-        private final FormQuestion formQuestionInstance;
+        public final FormQuestion formQuestionInstance;
+
 
         public Builder() {
 

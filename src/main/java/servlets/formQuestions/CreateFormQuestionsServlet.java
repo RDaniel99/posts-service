@@ -1,8 +1,7 @@
-package servlets.posts;
+package servlets.formQuestions;
 
-import services.posts.CreatePostService;
+import services.formQuestions.CreateFormQuestionService;
 
-import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,16 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(value = "/api/posts/create")
-public class CreatePostServlet extends HttpServlet {
+@WebServlet(value = "/api/formQuestions/create")
+public class CreateFormQuestionsServlet extends HttpServlet {
 
-    private CreatePostService service;
+    private CreateFormQuestionService service;
 
     @Override
     public void init() throws ServletException {
         super.init();
 
-        service = new CreatePostService();
+        service = new CreateFormQuestionService();
     }
 
     @Override
@@ -27,4 +26,5 @@ public class CreatePostServlet extends HttpServlet {
 
         service.execute(req, resp);
     }
+
 }

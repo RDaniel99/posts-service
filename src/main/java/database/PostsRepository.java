@@ -4,12 +4,13 @@ import exceptions.CrudException;
 import models.Post;
 import models.Status;
 
-import javax.ejb.LocalBean;
-import javax.ejb.Singleton;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import static exceptions.CrudException.Reason.ID_CANNOT_BE_CHANGED;
+import static exceptions.CrudException.Reason.USER_ID_CANNOT_BE_CHANGED;
 
 // TODO: Implement Singleton pattern
 public class PostsRepository implements Database, Repository<Post> {
@@ -85,13 +86,6 @@ public class PostsRepository implements Database, Repository<Post> {
     }
 
     @Override
-    public Post update(Post object) {
-        // TODO: Should we change the signature with one that contains
-        // TODO: original and new object?
-
-        return null;
-    }
-
     public Post update(Post originalPost, Post newPost) {
 
         try {
@@ -117,13 +111,13 @@ public class PostsRepository implements Database, Repository<Post> {
         if(newPost.getId() != null && !originalPost.getId().equals(newPost.getId())) {
 
             // TODO: Put constants for messages
-            throw new CrudException("Id can not be changed");
+            throw new CrudException(ID_CANNOT_BE_CHANGED);
         }
 
         if(newPost.getUserId() != null && !originalPost.getUserId().equals(newPost.getUserId())) {
 
             // TODO: Put constants for messages
-            throw new CrudException("User Id can not be changed");
+            throw new CrudException(USER_ID_CANNOT_BE_CHANGED);
         }
 
         if(newPost.getStatus() != null && !originalPost.getStatus().equals(newPost.getStatus())) {

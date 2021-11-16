@@ -15,7 +15,7 @@ public class FormAnswerRepository implements Database, Repository<FormAnswer> {
     }
 
     @Override
-    public FormAnswer update(FormAnswer object) {
+    public FormAnswer update(FormAnswer originalObject, FormAnswer newObject) {
         return null;
     }
 

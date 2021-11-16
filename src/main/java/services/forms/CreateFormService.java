@@ -1,11 +1,10 @@
 package services.forms;
 
-import database.FormsRepository;
+import database.FormRepository;
 import mappers.FormMapper;
 import models.Form;
 import services.Service;
 
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -13,11 +12,11 @@ import java.io.PrintWriter;
 
 public class CreateFormService implements Service {
 
-    private final FormsRepository repository;
+    private final FormRepository repository;
 
     public CreateFormService() {
 
-        repository = new FormsRepository();
+        repository = new FormRepository();
     }
 
     @Override

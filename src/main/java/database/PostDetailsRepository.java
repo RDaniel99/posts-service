@@ -1,5 +1,6 @@
 package database;
 
+import javafx.geometry.Pos;
 import models.PostDetails;
 
 public class PostDetailsRepository implements Database, Repository<PostDetails> {
@@ -15,7 +16,7 @@ public class PostDetailsRepository implements Database, Repository<PostDetails> 
     }
 
     @Override
-    public PostDetails update(PostDetails object) {
+    public PostDetails update(PostDetails originalDetails, PostDetails newObject) {
         return null;
     }
 

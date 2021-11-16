@@ -1,9 +1,6 @@
-package services.forms;
+package services.formQuestions;
 
 import database.FormRepository;
-import exceptions.FormReadException;
-import mappers.FormMapper;
-import models.Form;
 import services.Service;
 import services.utils.PathUtils;
 
@@ -12,25 +9,26 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class ReadFormService implements Service {
+public class DeleteFormQuestionService implements Service {
 
     private final FormRepository repository;
 
-    public ReadFormService() {
+    public DeleteFormQuestionService() {
 
         repository = new FormRepository();
     }
 
 
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, FormReadException {
+    public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         String path = req.getPathInfo();
 
         Integer id = PathUtils.getEntityId(path);
-        Form form = repository.read(id);
+        Boolean result = repository.delete(id);
 
         PrintWriter out = resp.getWriter();
-        out.print(FormMapper.fromObjectToJson(form));
+        out.print(result);
     }
+
 }
