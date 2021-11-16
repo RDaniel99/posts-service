@@ -5,6 +5,8 @@ package models;
  */
 public class FormAnswer {
 
+    private Integer id;
+
     /**
      * The question this answer is associated with
      */
@@ -13,7 +15,7 @@ public class FormAnswer {
     /**
      * The user that answered to the question
      */
-    private String userId;
+    private Integer userId;
 
     /**
      * The question content
@@ -30,13 +32,22 @@ public class FormAnswer {
         return content;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
 
         return userId;
     }
 
     private FormAnswer() {
 
+    }
+
+    public void setId(Integer id) {
+
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public static class Builder {
@@ -48,13 +59,19 @@ public class FormAnswer {
             formAnswerInstance = new FormAnswer();
         }
 
+        public Builder withId(Integer id) {
+
+            formAnswerInstance.id = id;
+            return this;
+        }
+
         public Builder withQuestionId(Integer questionId) {
 
             formAnswerInstance.questionId = questionId;
             return this;
         }
 
-        public Builder withUserId(String userId) {
+        public Builder withUserId(Integer userId) {
 
             formAnswerInstance.userId = userId;
             return this;

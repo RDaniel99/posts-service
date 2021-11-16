@@ -33,7 +33,8 @@ public class FormsQuestionsRepository implements Database, Repository<FormQuesti
 
             stmt.close();
         } catch (SQLException exception) {
-            //TO-DO: User Friendly message
+
+            //TODO: User Friendly message
         }
         return formQuestion;
     }
@@ -130,12 +131,10 @@ public class FormsQuestionsRepository implements Database, Repository<FormQuesti
 
     private FormQuestion convertToFormQuestion(ResultSet resultSet) throws SQLException {
 
-        FormQuestion formQuestion = new FormQuestion.Builder()
+        return new FormQuestion.Builder()
                 .withId(resultSet.getInt(1))
                 .withFormId(resultSet.getInt(2))
                 .withContent(resultSet.getString(3))
                 .build();
-
-        return formQuestion;
     }
 }

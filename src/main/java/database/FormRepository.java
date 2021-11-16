@@ -5,8 +5,7 @@ import models.Form;
 
 import java.sql.*;
 
-import static constants.FormsDatabase.DATABASE_NAME;
-import static constants.FormsDatabase.FORMS_ID;
+import static constants.FormsDatabase.*;
 
 public class FormRepository implements Database, Repository<Form> {
 
@@ -25,7 +24,7 @@ public class FormRepository implements Database, Repository<Form> {
     @Override
     public Form create(Form form) {
 
-        String createQuery = String.format("INSERT INTO %s(%s) VALUE(?)", DATABASE_NAME, FORMS_ID);
+        String createQuery = String.format("INSERT INTO %s(%s) VALUE(?)", DATABASE_NAME, FORMS_POST_ID);
         try {
 
             PreparedStatement stmt = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
@@ -35,12 +34,14 @@ public class FormRepository implements Database, Repository<Form> {
             ResultSet rs = stmt.getGeneratedKeys();
 
             if (rs.next()) {
+
                 form.setId(rs.getInt(1));
             }
 
             stmt.close();
         } catch (SQLException exception) {
-            //TO-DO: User Friendly message
+            System.out.println(exception.getMessage());
+            //TODO: User Friendly message
         }
         return form;
     }
@@ -70,7 +71,7 @@ public class FormRepository implements Database, Repository<Form> {
 
             stmt.close();
         } catch (SQLException exception) {
-            //TO-DO: User Friendly message
+            //TODO: User Friendly message
         }
 
         return form;
@@ -78,8 +79,7 @@ public class FormRepository implements Database, Repository<Form> {
 
     @Override
     public Form update(Form originalObject, Form newObject) {
-        //TODO: Does it make sense to have this operation for forms, given the fact that we cannot change the is,
-        // or reassign the port to other post?
+
         return null;
     }
 
