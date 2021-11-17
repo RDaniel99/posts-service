@@ -58,6 +58,7 @@ CREATE TABLE formanswer
     id          INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     question_id INT(6) UNSIGNED NOT NULL,
     user_id     INT(6) UNSIGNED NOT NULL,
+    content VARCHAR(2000),
     FOREIGN KEY (question_id)
         REFERENCES formquestions (id)
         ON DELETE CASCADE
