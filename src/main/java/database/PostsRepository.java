@@ -86,16 +86,16 @@ public class PostsRepository implements Database, Repository<Post> {
     }
 
     @Override
-    public Post update(Post originalPost, Post newPost) {
+    public Post update(Post originalPost, Post newPost) throws CrudException {
+
+        String setStmt = generateSetString(originalPost, newPost);
 
         try {
-
-            String setStmt = generateSetString(originalPost, newPost);
 
             Statement stmt = connection.createStatement();
             stmt.executeUpdate(String.format(queryUpdatePostById, setStmt, originalPost.getId()));
 
-        } catch (CrudException | SQLException ignored) {
+        } catch (SQLException ignored) {
             // TODO: Create TranslatorHandler for exceptions
             return originalPost;
         }
@@ -110,13 +110,11 @@ public class PostsRepository implements Database, Repository<Post> {
 
         if(newPost.getId() != null && !originalPost.getId().equals(newPost.getId())) {
 
-            // TODO: Put constants for messages
             throw new CrudException(ID_CANNOT_BE_CHANGED);
         }
 
         if(newPost.getUserId() != null && !originalPost.getUserId().equals(newPost.getUserId())) {
 
-            // TODO: Put constants for messages
             throw new CrudException(USER_ID_CANNOT_BE_CHANGED);
         }
 

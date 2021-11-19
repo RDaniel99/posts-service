@@ -1,6 +1,7 @@
 package services.posts.details;
 
 import database.PostDetailsRepository;
+import exceptions.CrudException;
 import mappers.PostDetailsMapper;
 import mappers.PostMapper;
 import models.Post;
@@ -25,16 +26,24 @@ public class UpdatePostDetailsService implements Service {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
+        PrintWriter out = resp.getWriter();
+
         // TODO: Add validation
         PostDetails newPostDetails = PostDetailsMapper.fromJsonToObject(req.getReader());
         Integer postDetailsId = Integer.parseInt(req.getParameter("id"));
 
         PostDetails originalPostDetails = repository.read(postDetailsId);
-        newPostDetails = repository.update(originalPostDetails, newPostDetails);
+        try {
+            newPostDetails = repository.update(originalPostDetails, newPostDetails);
+        } catch (CrudException exception) {
+            out.println(exception.getReason().getReasonText());
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return ;
+        }
 
         // TODO: This should be part of servlet, not service
         // TODO: To do in future, not now
-        PrintWriter out = resp.getWriter();
+
         out.print(PostDetailsMapper.fromObjectToJson(newPostDetails));
     }
 }

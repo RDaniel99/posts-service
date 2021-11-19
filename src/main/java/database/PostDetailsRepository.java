@@ -87,15 +87,16 @@ public class PostDetailsRepository implements Database, Repository<PostDetails> 
     }
 
     @Override
-    public PostDetails update(PostDetails originalDetails, PostDetails newPostDetails) {
-        try {
+    public PostDetails update(PostDetails originalDetails, PostDetails newPostDetails) throws CrudException {
 
-            String setStmt = generateSetString(originalDetails, newPostDetails);
+        String setStmt = generateSetString(originalDetails, newPostDetails);
+
+        try {
 
             Statement stmt = connection.createStatement();
             stmt.executeUpdate(String.format(queryUpdatePostDetailsById, setStmt, originalDetails.getId()));
 
-        } catch (CrudException | SQLException ignored) {
+        } catch (SQLException ignored) {
             // TODO: Create TranslatorHandler for exceptions
             return originalDetails;
         }
@@ -110,13 +111,11 @@ public class PostDetailsRepository implements Database, Repository<PostDetails> 
 
         if(newPostDetails.getId() != null && !originalDetails.getId().equals(newPostDetails.getId())) {
 
-            // TODO: Put constants for messages
             throw new CrudException(ID_CANNOT_BE_CHANGED);
         }
 
         if(newPostDetails.getPostId() != null && !originalDetails.getPostId().equals(newPostDetails.getPostId())) {
 
-            // TODO: Put constants for messages
             throw new CrudException(USER_ID_CANNOT_BE_CHANGED);
         }
 
