@@ -27,6 +27,8 @@ public class CrudException extends Exception {
 
         USER_ID_CANNOT_BE_CHANGED("User Id can not be changed"),
 
+        POST_ID_CANNOT_BE_CHANGED("Post Id can not be changed"),
+
         FORM_ID_CANNOT_BE_CHANGED("Form Id can not be changed"),
 
         QUESTION_ID_CANNOT_BE_CHANGED("Question Id cannot be changed");

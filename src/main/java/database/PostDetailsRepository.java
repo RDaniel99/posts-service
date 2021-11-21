@@ -1,5 +1,6 @@
 package database;
 
+import exceptions.CrudException;
 import models.ObjectCategory;
 import models.Post;
 import models.PostDetails;
@@ -12,12 +13,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Locale;
 
+import static exceptions.CrudException.Reason.ID_CANNOT_BE_CHANGED;
+import static exceptions.CrudException.Reason.USER_ID_CANNOT_BE_CHANGED;
+
 public class PostDetailsRepository implements Database, Repository<PostDetails> {
 
     private Connection connection;
     private final String queryInsertPostDetails = "INSERT INTO postsdetails(post_id, title, category, description) " +
             "VALUES(%d, \"%s\", \"%s\", \"%s\")";
     private final String querySelectPostDetailsById = "SELECT * FROM postsdetails WHERE id = %d";
+    private final String queryUpdatePostDetailsById = "UPDATE postsdetails SET %s WHERE id=%d";
 
     public PostDetailsRepository() {
         connection = Database.getConnection();
@@ -82,8 +87,71 @@ public class PostDetailsRepository implements Database, Repository<PostDetails> 
     }
 
     @Override
-    public PostDetails update(PostDetails originalDetails, PostDetails newObject) {
-        return null;
+    public PostDetails update(PostDetails originalDetails, PostDetails newPostDetails) throws CrudException {
+
+        String setStmt = generateSetString(originalDetails, newPostDetails);
+
+        try {
+
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(String.format(queryUpdatePostDetailsById, setStmt, originalDetails.getId()));
+
+        } catch (SQLException ignored) {
+            // TODO: Create TranslatorHandler for exceptions
+            return originalDetails;
+        }
+
+        return newPostDetails;
+    }
+
+    private String generateSetString(PostDetails originalDetails, PostDetails newPostDetails) throws CrudException {
+
+        StringBuilder builder = new StringBuilder();
+        boolean appendComma = false;
+
+        if(newPostDetails.getId() != null && !originalDetails.getId().equals(newPostDetails.getId())) {
+
+            throw new CrudException(ID_CANNOT_BE_CHANGED);
+        }
+
+        if(newPostDetails.getPostId() != null && !originalDetails.getPostId().equals(newPostDetails.getPostId())) {
+
+            throw new CrudException(USER_ID_CANNOT_BE_CHANGED);
+        }
+
+        if(newPostDetails.getTitle() != null && !originalDetails.getTitle().equals(newPostDetails.getTitle())) {
+
+            appendComma = true;
+            builder.append("title = ");
+            // TODO: Add Constant
+            builder.append("\"" + newPostDetails.getTitle() + "\"");
+        }
+
+        if(newPostDetails.getDescription() != null && !originalDetails.getDescription().equals(newPostDetails.getDescription())) {
+
+            if(appendComma) {
+
+                builder.append(", ");
+            }
+
+            appendComma = true;
+            builder.append("description = ");
+            builder.append("\"" + newPostDetails.getDescription() + "\"");
+        }
+
+        if(newPostDetails.getCategory() != null && !originalDetails.getCategory().equals(newPostDetails.getCategory())) {
+
+            if(appendComma) {
+
+                builder.append(", ");
+            }
+
+            appendComma = true;
+            builder.append("category = ");
+            builder.append("\"" + newPostDetails.getCategory() + "\"");
+        }
+
+        return builder.toString();
     }
 
     @Override
