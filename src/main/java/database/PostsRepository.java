@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static exceptions.CrudException.Reason.ID_CANNOT_BE_CHANGED;
 import static exceptions.CrudException.Reason.USER_ID_CANNOT_BE_CHANGED;
@@ -85,14 +86,16 @@ public class PostsRepository implements Database, Repository<Post> {
         return post;
     }
 
-    public List<Post> readAll() {
+    public List<Post> readAll(Optional<Integer> userIdConstraint, Optional<String> statusConstraint) {
 
         List<Post> posts = new ArrayList<>();
 
         try {
             Statement stmt = connection.createStatement();
 
-            ResultSet rs = stmt.executeQuery(querySelectAllPosts);
+            String whereClause = generateWhereString(userIdConstraint, statusConstraint);
+
+            ResultSet rs = stmt.executeQuery(querySelectAllPosts + whereClause);
 
             while(rs.next()) {
 
@@ -109,14 +112,16 @@ public class PostsRepository implements Database, Repository<Post> {
         return posts;
     }
 
-    public List<PostDTO> readAllFull() {
+    public List<PostDTO> readAllFull(Optional<Integer> userIdConstraint, Optional<String> statusConstraint) {
 
         List<PostDTO> posts = new ArrayList<>();
 
         try {
             Statement stmt = connection.createStatement();
 
-            ResultSet rs = stmt.executeQuery(querySelectFullAllPosts);
+            String whereClause = generateWhereString(userIdConstraint, statusConstraint);
+
+            ResultSet rs = stmt.executeQuery(querySelectFullAllPosts + whereClause);
 
             while(rs.next()) {
 
@@ -131,6 +136,36 @@ public class PostsRepository implements Database, Repository<Post> {
         }
 
         return posts;
+    }
+
+    private String generateWhereString(Optional<Integer> userIdConstraint, Optional<String> statusConstraint) {
+
+        StringBuilder builder = new StringBuilder();
+
+        boolean appendAnd = false;
+
+        if(userIdConstraint.isPresent()) {
+            builder.append(" WHERE user_id = ");
+            builder.append(userIdConstraint.get().toString());
+
+            appendAnd = true;
+        }
+
+        if(statusConstraint.isPresent()) {
+
+            if(appendAnd) {
+
+                builder.append(" AND ");
+            }
+            else {
+                builder.append(" WHERE ");
+            }
+
+            builder.append("status = ");
+            builder.append('"').append(statusConstraint.get()).append('"');
+        }
+
+        return builder.toString();
     }
 
     private Post convertToPost(ResultSet rs) throws SQLException {

@@ -60,13 +60,16 @@ public class GetPostService implements Service {
         }
         else {
 
-            getPostsWithBasicDetails(resp);
+            getPostsWithBasicDetails(req, resp);
         }
     }
 
-    private void getPostsWithBasicDetails(HttpServletResponse resp) throws IOException {
+    private void getPostsWithBasicDetails(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        List<Post> posts = repository.readAll();
+        Optional<Integer> userId = getUserIdParameterValue(req);
+        Optional<String> status = getStatusParameterValue(req);
+
+        List<Post> posts = repository.readAll(userId, status);
 
         PrintWriter out = resp.getWriter();
         out.write(PostMapper.fromListOfObjectsToJson(posts));
@@ -96,7 +99,7 @@ public class GetPostService implements Service {
         }
         else {
 
-            getPostsWithFullDetails(resp);
+            getPostsWithFullDetails(req, resp);
         }
     }
 
@@ -108,11 +111,40 @@ public class GetPostService implements Service {
         out.write(PostMapper.fromDtoToJson(postDTO));
     }
 
-    private void getPostsWithFullDetails(HttpServletResponse resp) throws IOException {
+    private void getPostsWithFullDetails(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        List<PostDTO> postsDTOs = repository.readAllFull();
+        Optional<Integer> userId = getUserIdParameterValue(req);
+        Optional<String> status = getStatusParameterValue(req);
+
+        List<PostDTO> postsDTOs = repository.readAllFull(userId, status);
 
         PrintWriter out = resp.getWriter();
         out.write(PostMapper.fromListOfObjectsToJson(postsDTOs));
+    }
+
+    private Optional<Integer> getUserIdParameterValue(HttpServletRequest req) {
+
+        Optional<Integer> userId;
+
+        try {
+            userId = Optional.of(Integer.parseInt(req.getParameter("userId")));
+        } catch (Exception ignored) {
+            userId = Optional.empty();
+        }
+
+        return userId;
+    }
+
+    private Optional<String> getStatusParameterValue(HttpServletRequest req) {
+
+        Optional<String> status;
+
+        try {
+            status = Optional.of(req.getParameter("status"));
+        } catch (Exception ignored) {
+            status = Optional.empty();
+        }
+
+        return status;
     }
 }
