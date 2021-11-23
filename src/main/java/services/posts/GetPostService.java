@@ -6,12 +6,12 @@ import mappers.PostMapper;
 import models.Post;
 import services.Service;
 
-import javax.ejb.Singleton;
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.Optional;
 
 public class GetPostService implements Service {
 
@@ -29,11 +29,11 @@ public class GetPostService implements Service {
 
         if(isFullDetails(req)) {
 
-            getPostByIdWithFullDetails(req, resp);
+            getWithFullDetails(req, resp);
         }
         else {
 
-            getPostByIdWithBasicDetails(req, resp);
+            getWithBasicDetails(req, resp);
         }
     }
 
@@ -44,9 +44,35 @@ public class GetPostService implements Service {
         return details == null || details.equals("FULL");
     }
 
-    public void getPostByIdWithBasicDetails(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void getWithBasicDetails(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        Integer id = Integer.parseInt(req.getParameter("id"));
+        Optional<Integer> id;
+
+        try {
+            id = Optional.of(Integer.parseInt(req.getParameter("id")));
+        } catch (Exception ignored) {
+            id = Optional.empty();
+        }
+
+        if(id.isPresent()) {
+
+            getPostByIdWithBasicDetails(id.get(), resp);
+        }
+        else {
+
+            getPostsWithBasicDetails(resp);
+        }
+    }
+
+    private void getPostsWithBasicDetails(HttpServletResponse resp) throws IOException {
+
+        List<Post> posts = repository.readAll();
+
+        PrintWriter out = resp.getWriter();
+        out.write(PostMapper.fromListOfObjectsToJson(posts));
+    }
+
+    private void getPostByIdWithBasicDetails(Integer id, HttpServletResponse resp) throws IOException {
 
         Post post = repository.read(id);
 
@@ -54,13 +80,39 @@ public class GetPostService implements Service {
         out.write(PostMapper.fromObjectToJson(post));
     }
 
-    public void getPostByIdWithFullDetails(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void getWithFullDetails(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        Integer id = Integer.parseInt(req.getParameter("id"));
+        Optional<Integer> id;
+
+        try {
+            id = Optional.of(Integer.parseInt(req.getParameter("id")));
+        } catch (Exception ignored) {
+            id = Optional.empty();
+        }
+
+        if(id.isPresent()) {
+
+            getPostByIdWithFullDetails(id.get(), resp);
+        }
+        else {
+
+            getPostsWithFullDetails(resp);
+        }
+    }
+
+    private void getPostByIdWithFullDetails(Integer id, HttpServletResponse resp) throws IOException {
 
         PostDTO postDTO = repository.readFull(id);
 
         PrintWriter out = resp.getWriter();
         out.write(PostMapper.fromDtoToJson(postDTO));
+    }
+
+    private void getPostsWithFullDetails(HttpServletResponse resp) throws IOException {
+
+        List<PostDTO> postsDTOs = repository.readAllFull();
+
+        PrintWriter out = resp.getWriter();
+        out.write(PostMapper.fromListOfObjectsToJson(postsDTOs));
     }
 }

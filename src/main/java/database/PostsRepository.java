@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import static exceptions.CrudException.Reason.ID_CANNOT_BE_CHANGED;
 import static exceptions.CrudException.Reason.USER_ID_CANNOT_BE_CHANGED;
@@ -22,8 +24,11 @@ public class PostsRepository implements Database, Repository<Post> {
     private final String queryInsertPost = "INSERT INTO posts(user_id, status, has_form) VALUES(%d, \"%s\", %b)";
     private final String queryDeletePost = "DELETE FROM posts WHERE id=%d";
     private final String querySelectPostById = "SELECT * FROM posts WHERE id=%d";
+    private final String querySelectAllPosts = "SELECT * FROM posts";
+    private final String querySelectFullAllPosts = "SELECT p.id, p.user_id, p.status, p.has_form, d.id as details_id, " +
+            "d.category, d.description, d.title, d.created_at FROM posts p JOIN postsdetails d ON d.post_id=p.id";
     private final String querySelectFullPostById = "SELECT p.id, p.user_id, p.status, p.has_form, d.id as details_id, " +
-            "d.category, d.description, d.title, d.created_at FROM posts p JOIN postsdetails d ON post_id WHERE p.id=%d";
+            "d.category, d.description, d.title, d.created_at FROM posts p JOIN postsdetails d ON d.post_id=p.id WHERE p.id=%d";
     private final String queryUpdatePostById = "UPDATE posts SET %s WHERE id=%d";
 
     public PostsRepository() {
@@ -78,6 +83,54 @@ public class PostsRepository implements Database, Repository<Post> {
         }
 
         return post;
+    }
+
+    public List<Post> readAll() {
+
+        List<Post> posts = new ArrayList<>();
+
+        try {
+            Statement stmt = connection.createStatement();
+
+            ResultSet rs = stmt.executeQuery(querySelectAllPosts);
+
+            while(rs.next()) {
+
+                Post post = convertToPost(rs);
+                posts.add(post);
+            }
+
+            stmt.close();
+        } catch(Exception ignored) {
+
+            return new ArrayList<>();
+        }
+
+        return posts;
+    }
+
+    public List<PostDTO> readAllFull() {
+
+        List<PostDTO> posts = new ArrayList<>();
+
+        try {
+            Statement stmt = connection.createStatement();
+
+            ResultSet rs = stmt.executeQuery(querySelectFullAllPosts);
+
+            while(rs.next()) {
+
+                PostDTO post = convertToPostDTO(rs);
+                posts.add(post);
+            }
+
+            stmt.close();
+        } catch(Exception ignored) {
+
+            return new ArrayList<>();
+        }
+
+        return posts;
     }
 
     private Post convertToPost(ResultSet rs) throws SQLException {

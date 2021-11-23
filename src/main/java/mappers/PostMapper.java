@@ -5,6 +5,7 @@ import dtos.PostDTO;
 import models.Post;
 
 import java.io.BufferedReader;
+import java.util.List;
 
 public class PostMapper {
 
@@ -16,6 +17,11 @@ public class PostMapper {
     public static String fromObjectToJson(Post post) {
 
         return new Gson().toJson(post);
+    }
+
+    public static String fromListOfObjectsToJson(List posts) {
+
+        return new Gson().toJson(posts);
     }
 
     public static String fromDtoToJson(PostDTO dto) {
