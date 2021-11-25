@@ -77,6 +77,36 @@ public class FormRepository implements Database, Repository<Form> {
         return form;
     }
 
+
+    public Form readByPostId(Integer id) throws FormReadException {
+
+        Form form = null;
+        String createQuery = String.format("SELECT * From %s WHERE %s = ?", DATABASE_NAME, FORMS_POST_ID);
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+
+                form = convertToForm(rs);
+            }
+            else{
+
+                throw new FormReadException(FormReadException.Reason.FORM_NOT_FOUND);
+            }
+
+            stmt.close();
+        } catch (SQLException exception) {
+            //TO-DO: User Friendly message
+        }
+
+        return form;
+    }
+
     @Override
     public Form update(Form originalObject, Form newObject) {
 
@@ -97,7 +127,7 @@ public class FormRepository implements Database, Repository<Form> {
 
             stmt.close();
         } catch (SQLException exception) {
-            //TO-DO: User Friendly message
+            //TODO: User Friendly message
             return false;
         }
 
