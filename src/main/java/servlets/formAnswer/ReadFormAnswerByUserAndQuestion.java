@@ -1,6 +1,7 @@
-package servlets.forms;
+package servlets.formAnswer;
 
-import services.forms.ReadFormService;
+import services.formAnswer.ReadFormAnswerByUserAndQuestionService;
+import services.formAnswer.ReadFormAnswerService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(value = "/api/forms/get/*")
-public class ReadFormServlet extends HttpServlet {
+@WebServlet(value = "/api/formAnswer/getByUserAndQuestion")
+public class ReadFormAnswerByUserAndQuestion extends HttpServlet {
 
-    private ReadFormService service;
+    private ReadFormAnswerByUserAndQuestionService service;
 
     @Override
     public void init() throws ServletException {
         super.init();
 
-        service = new ReadFormService();
+        service = new ReadFormAnswerByUserAndQuestionService();
     }
 
     @Override

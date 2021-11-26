@@ -68,6 +68,34 @@ public class FormAnswerRepository implements Database, Repository<FormAnswer> {
         return formAnswer;
     }
 
+
+    public FormAnswer readByQuestionAndUserId(Integer userId, Integer questionId) {
+
+        FormAnswer formAnswer = null;
+        String createQuery = String.format("SELECT * From %s WHERE %s = ? AND %s = ?", DATABASE_NAME, FORM_QUESTION_ID, USER_ID);
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, questionId);
+            stmt.setInt(2, userId);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+
+                formAnswer = convertToFormAnswer(rs);
+            }
+
+            stmt.close();
+        } catch (SQLException exception) {
+            //TODO: User Friendly message
+        }
+
+        return formAnswer;
+    }
+
+
     @Override
     public FormAnswer update(FormAnswer originalFormAnswer, FormAnswer newFormAnswer) {
 

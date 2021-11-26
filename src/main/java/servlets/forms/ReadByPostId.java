@@ -1,5 +1,6 @@
 package servlets.forms;
 
+import services.forms.ReadByPostIdService;
 import services.forms.ReadFormService;
 
 import javax.servlet.ServletException;
@@ -9,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(value = "/api/forms/get/*")
-public class ReadFormServlet extends HttpServlet {
+@WebServlet(value = "/api/forms/get")
+public class ReadByPostId extends HttpServlet {
 
-    private ReadFormService service;
+    private ReadByPostIdService service;
 
     @Override
     public void init() throws ServletException {
         super.init();
 
-        service = new ReadFormService();
+        service = new ReadByPostIdService();
     }
 
     @Override
@@ -27,3 +28,4 @@ public class ReadFormServlet extends HttpServlet {
         service.execute(req, resp);
     }
 }
+

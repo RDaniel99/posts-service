@@ -1,12 +1,15 @@
 package database;
 
 import exceptions.CrudException;
+import models.Form;
 import models.FormQuestion;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import static constants.FormQuestionsDatabase.*;
 import static exceptions.CrudException.Reason.*;
@@ -65,7 +68,34 @@ public class FormsQuestionsRepository implements Database, Repository<FormQuesti
         return formQuestion;
     }
 
-   @Override
+    public List<FormQuestion> readByFormID(Integer id) {
+
+        List<FormQuestion> formQuestionList = new ArrayList<>();
+
+        String createQuery = String.format("SELECT * From %s WHERE %s = ?", DATABASE_NAME, FORM_ID);
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+
+                formQuestionList.add(convertToFormQuestion(rs));
+            }
+
+            stmt.close();
+        } catch (SQLException exception) {
+            //TODO: User Friendly message
+        }
+
+        return formQuestionList;
+    }
+
+
+    @Override
     public FormQuestion update(FormQuestion originalFormQuestion, FormQuestion newFormQuestion) {
 
         try {
@@ -121,7 +151,7 @@ public class FormsQuestionsRepository implements Database, Repository<FormQuesti
             stmt.executeUpdate();
 
             stmt.close();
-        } catch (SQLException exception) {
+        } catch (Exception exception) {
             //TODO: User Friendly message
             return false;
         }
