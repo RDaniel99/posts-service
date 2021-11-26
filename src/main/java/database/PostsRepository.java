@@ -1,6 +1,9 @@
 package database;
 
+import dtos.PostDTO;
+import dtos.PostDetailsDTO;
 import exceptions.CrudException;
+import models.ObjectCategory;
 import models.Post;
 import models.Status;
 
@@ -8,6 +11,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static exceptions.CrudException.Reason.ID_CANNOT_BE_CHANGED;
 import static exceptions.CrudException.Reason.USER_ID_CANNOT_BE_CHANGED;
@@ -19,6 +25,11 @@ public class PostsRepository implements Database, Repository<Post> {
     private final String queryInsertPost = "INSERT INTO posts(user_id, status, has_form) VALUES(%d, \"%s\", %b)";
     private final String queryDeletePost = "DELETE FROM posts WHERE id=%d";
     private final String querySelectPostById = "SELECT * FROM posts WHERE id=%d";
+    private final String querySelectAllPosts = "SELECT * FROM posts";
+    private final String querySelectFullAllPosts = "SELECT p.id, p.user_id, p.status, p.has_form, d.id as details_id, " +
+            "d.category, d.description, d.title, d.created_at FROM posts p JOIN postsdetails d ON d.post_id=p.id";
+    private final String querySelectFullPostById = "SELECT p.id, p.user_id, p.status, p.has_form, d.id as details_id, " +
+            "d.category, d.description, d.title, d.created_at FROM posts p JOIN postsdetails d ON d.post_id=p.id WHERE p.id=%d";
     private final String queryUpdatePostById = "UPDATE posts SET %s WHERE id=%d";
 
     public PostsRepository() {
@@ -75,6 +86,88 @@ public class PostsRepository implements Database, Repository<Post> {
         return post;
     }
 
+    public List<Post> readAll(Optional<Integer> userIdConstraint, Optional<String> statusConstraint) {
+
+        List<Post> posts = new ArrayList<>();
+
+        try {
+            Statement stmt = connection.createStatement();
+
+            String whereClause = generateWhereString(userIdConstraint, statusConstraint);
+
+            ResultSet rs = stmt.executeQuery(querySelectAllPosts + whereClause);
+
+            while(rs.next()) {
+
+                Post post = convertToPost(rs);
+                posts.add(post);
+            }
+
+            stmt.close();
+        } catch(Exception ignored) {
+
+            return new ArrayList<>();
+        }
+
+        return posts;
+    }
+
+    public List<PostDTO> readAllFull(Optional<Integer> userIdConstraint, Optional<String> statusConstraint) {
+
+        List<PostDTO> posts = new ArrayList<>();
+
+        try {
+            Statement stmt = connection.createStatement();
+
+            String whereClause = generateWhereString(userIdConstraint, statusConstraint);
+
+            ResultSet rs = stmt.executeQuery(querySelectFullAllPosts + whereClause);
+
+            while(rs.next()) {
+
+                PostDTO post = convertToPostDTO(rs);
+                posts.add(post);
+            }
+
+            stmt.close();
+        } catch(Exception ignored) {
+
+            return new ArrayList<>();
+        }
+
+        return posts;
+    }
+
+    private String generateWhereString(Optional<Integer> userIdConstraint, Optional<String> statusConstraint) {
+
+        StringBuilder builder = new StringBuilder();
+
+        boolean appendAnd = false;
+
+        if(userIdConstraint.isPresent()) {
+            builder.append(" WHERE user_id = ");
+            builder.append(userIdConstraint.get().toString());
+
+            appendAnd = true;
+        }
+
+        if(statusConstraint.isPresent()) {
+
+            if(appendAnd) {
+
+                builder.append(" AND ");
+            }
+            else {
+                builder.append(" WHERE ");
+            }
+
+            builder.append("status = ");
+            builder.append('"').append(statusConstraint.get()).append('"');
+        }
+
+        return builder.toString();
+    }
+
     private Post convertToPost(ResultSet rs) throws SQLException {
 
         Integer id = rs.getInt("id");
@@ -83,6 +176,27 @@ public class PostsRepository implements Database, Repository<Post> {
         Status status = Status.valueOf(rs.getString("status"));
 
         return new Post.PostBuilder(id, userId).hasForm(hasForm).withStatus(status).build();
+    }
+
+    private PostDTO convertToPostDTO(ResultSet rs) throws SQLException {
+
+        Integer postId = rs.getInt("id");
+        Integer userId = rs.getInt("user_id");
+        Boolean hasForm = rs.getBoolean("has_form");
+        Status status = Status.valueOf(rs.getString("status"));
+
+        Integer detailsId = rs.getInt("details_id");
+        String title = rs.getString("title");
+        String description = rs.getString("description");
+        ObjectCategory category = ObjectCategory.valueOf(rs.getString("category"));
+
+        PostDetailsDTO detailsDTO = new PostDetailsDTO.PostDetailsDTOBuilder(detailsId, postId)
+                .withCategory(category).withDescription(description).withTitle(title)
+                .build();
+
+        return new PostDTO.PostDTOBuilder(postId, userId)
+                .hasForm(hasForm).withStatus(status).withDetails(detailsDTO)
+                .build();
     }
 
     @Override
@@ -158,5 +272,28 @@ public class PostsRepository implements Database, Repository<Post> {
         }
 
         return true;
+    }
+
+    public PostDTO readFull(Integer id) {
+
+        PostDTO postDTO = null;
+
+        try {
+            Statement stmt = connection.createStatement();
+
+            ResultSet rs = stmt.executeQuery(String.format(querySelectFullPostById, id));
+
+            if(rs.next()) {
+
+                postDTO = convertToPostDTO(rs);
+            }
+
+            stmt.close();
+        } catch(Exception ignored) {
+
+            return null;
+        }
+
+        return postDTO;
     }
 }
