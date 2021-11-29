@@ -58,7 +58,9 @@ public class PostsRepository implements Database, Repository<Post> {
             }
 
             stmt.close();
-        } catch(Exception ignored) {}
+        } catch(Exception notIgnored) {
+            System.err.println(notIgnored.getMessage());
+        }
 
         return post;
     }
