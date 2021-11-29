@@ -22,7 +22,8 @@ import static exceptions.CrudException.Reason.USER_ID_CANNOT_BE_CHANGED;
 public class PostsRepository implements Database, Repository<Post> {
 
     private Connection connection;
-    private final String queryInsertPost = "INSERT INTO posts(user_id, status, has_form) VALUES(%d, \"%s\", %b)";
+    // TODO: Change back to mysql escaping character " instead of '
+    private final String queryInsertPost = "INSERT INTO posts(user_id, status, has_form) VALUES(%d, \'%s\', %b)";
     private final String queryDeletePost = "DELETE FROM posts WHERE id=%d";
     private final String querySelectPostById = "SELECT * FROM posts WHERE id=%d";
     private final String querySelectAllPosts = "SELECT * FROM posts";
