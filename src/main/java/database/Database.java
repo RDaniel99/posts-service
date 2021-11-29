@@ -14,7 +14,7 @@ public interface Database {
 
         try {
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(getDriver());
             return DriverManager.getConnection(getConnectionURI(), getDbUser(), getDbPassword());
         }
         catch (Exception e) {
