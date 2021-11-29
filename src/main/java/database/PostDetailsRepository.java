@@ -13,14 +13,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Locale;
 
+import static database.utils.QueryEnhancer.enhanceQuery;
 import static exceptions.CrudException.Reason.ID_CANNOT_BE_CHANGED;
 import static exceptions.CrudException.Reason.USER_ID_CANNOT_BE_CHANGED;
 
 public class PostDetailsRepository implements Database, Repository<PostDetails> {
 
     private Connection connection;
-    private final String queryInsertPostDetails = "INSERT INTO postsdetails(post_id, title, category, description) " +
-            "VALUES(%d, \"%s\", \"%s\", \"%s\")";
+    private final String queryInsertPostDetails = enhanceQuery("INSERT INTO postsdetails(post_id, title, category, description) " +
+            "VALUES(%d, \"%s\", \"%s\", \"%s\")");
     private final String querySelectPostDetailsById = "SELECT * FROM postsdetails WHERE id = %d";
     private final String queryUpdatePostDetailsById = "UPDATE postsdetails SET %s WHERE id=%d";
 

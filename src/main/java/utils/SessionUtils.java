@@ -12,6 +12,12 @@ public class SessionUtils {
     private static final String environmentPropertyName = "environment";
     private static final String developEnvValue = "develop";
     private static final String testEnvValue = "test";
+    private static final String prodEnvValue = "lostandfound.env";
+
+    public static boolean isProductionEnvironment() {
+
+        return !System.getenv(prodEnvValue).isEmpty();
+    }
 
     public static boolean isDevelopEnvironment() {
 
