@@ -19,7 +19,7 @@ public class FormsQuestionsRepository implements Database, Repository<FormQuesti
     @Override
     public FormQuestion create(FormQuestion formQuestion) {
 
-        String createQuery = String.format("INSERT INTO %s(%s, %s) VALUE(?, ?)", DATABASE_NAME, FORM_ID, CONTENT);
+        String createQuery = String.format("INSERT INTO %s(%s, %s) VALUES(?, ?)", DATABASE_NAME, FORM_ID, CONTENT);
         try {
 
             PreparedStatement stmt = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);

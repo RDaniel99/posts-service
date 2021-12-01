@@ -17,7 +17,7 @@ public class FormAnswerRepository implements Database, Repository<FormAnswer> {
     @Override
     public FormAnswer create(FormAnswer formAnswer) {
 
-        String createQuery = String.format("INSERT INTO %s(%s, %s, %s) VALUE(?, ?, ?)", DATABASE_NAME, FORM_QUESTION_ID, USER_ID, CONTENT);
+        String createQuery = String.format("INSERT INTO %s(%s, %s, %s) VALUES(?, ?, ?)", DATABASE_NAME, FORM_QUESTION_ID, USER_ID, CONTENT);
 
         try {
 

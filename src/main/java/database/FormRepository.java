@@ -24,7 +24,7 @@ public class FormRepository implements Database, Repository<Form> {
     @Override
     public Form create(Form form) {
 
-        String createQuery = String.format("INSERT INTO %s(%s) VALUE(?)", DATABASE_NAME, FORMS_POST_ID);
+        String createQuery = String.format("INSERT INTO %s(%s) VALUES(?)", DATABASE_NAME, FORMS_POST_ID);
         try {
 
             PreparedStatement stmt = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
