@@ -16,6 +16,8 @@ public class SessionUtils {
 
     public static boolean isProductionEnvironment() {
 
+        String value = System.getenv(prodEnvValue);
+        if(value == null) return false;
         return !System.getenv(prodEnvValue).isEmpty();
     }
 
