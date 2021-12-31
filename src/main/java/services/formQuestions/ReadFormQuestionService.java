@@ -6,6 +6,7 @@ import models.FormQuestion;
 import services.Service;
 import services.utils.PathUtils;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -13,11 +14,14 @@ import java.io.PrintWriter;
 
 public class ReadFormQuestionService implements Service {
 
-    private final FormsQuestionsRepository repository;
+    @Inject
+    private  FormsQuestionsRepository repository;
+
+    @Inject
+    private FormQuestionMapper formQuestionMapper;
 
     public ReadFormQuestionService() {
 
-        this.repository = new FormsQuestionsRepository();
     }
 
     @Override
@@ -29,7 +33,7 @@ public class ReadFormQuestionService implements Service {
         FormQuestion formQuestion = repository.read(id);
 
         PrintWriter out = resp.getWriter();
-        out.print(FormQuestionMapper.fromObjectToJson(formQuestion));
+        out.print(formQuestionMapper.fromObjectToJson(formQuestion));
 
     }
 }

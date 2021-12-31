@@ -1,8 +1,8 @@
 package servlets.posts.details;
 
-import services.posts.CreatePostService;
 import services.posts.details.CreatePostDetailsService;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,13 +13,12 @@ import java.io.IOException;
 @WebServlet(value = "/api/posts/details/create")
 public class CreatePostDetailsServlet extends HttpServlet {
 
+    @Inject
     private CreatePostDetailsService service;
 
     @Override
     public void init() throws ServletException {
         super.init();
-
-        service = new CreatePostDetailsService();
     }
 
     @Override

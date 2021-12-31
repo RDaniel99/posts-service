@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Objects;
+
 public class Post {
 
     private Integer id;
@@ -76,5 +78,18 @@ public class Post {
 
             return new Post(this.id, this.userId, this.status, this.hasForm);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(id, post.id) && Objects.equals(userId, post.userId) && status == post.status && Objects.equals(hasForm, post.hasForm);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, status, hasForm);
     }
 }

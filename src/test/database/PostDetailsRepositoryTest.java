@@ -1,7 +1,7 @@
-import database.PostsRepository;
+package database;
+
 import models.Post;
-import models.Status;
-import org.junit.jupiter.api.BeforeAll;
+import models.PostDetails;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -15,11 +15,12 @@ import java.sql.Statement;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import static models.Status.PENDING_FOUND;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-public class PostsRepositoryTest {
+class PostDetailsRepositoryTest {
 
     @Mock
     Connection connection;
@@ -30,7 +31,7 @@ public class PostsRepositoryTest {
 
     @Spy
     @InjectMocks
-    PostsRepository repository = new PostsRepository();
+    PostDetailsRepository repository = new PostDetailsRepository();
 
     public void setup() throws SQLException {
 
@@ -45,24 +46,23 @@ public class PostsRepositoryTest {
     }
 
     @Test
-    public void testIfRepoCreatesPost() throws SQLException {
+    public void testIfRepoCreatesPostDetails() throws SQLException {
 
         // setup
         setup();
-        Post post = new Post.PostBuilder(null, 20)
-                .withStatus(PENDING_FOUND)
-                .hasForm(true)
+        PostDetails postDetails = new PostDetails.PostDetailsBuilder(null, 20)
                 .build();
 
         // execute
-        post = repository.create(post);
+        postDetails = repository.create(postDetails);
 
         // verify
-        assertEquals(5, post.getId());
+        assertEquals(5, postDetails.getId());
 
         verify(stmt).executeUpdate(
-                eq("INSERT INTO posts(user_id, status, has_form) VALUES(20, \"PENDING_FOUND\", true)"),
+                eq("INSERT INTO postsdetails(post_id, title, category, description) VALUES(20, \"null\", \"null\", \"null\")"),
                 eq(RETURN_GENERATED_KEYS)
         );
     }
+
 }

@@ -13,13 +13,13 @@ import java.io.IOException;
 @WebServlet(value = "/api/posts/create")
 public class CreatePostServlet extends HttpServlet {
 
+    @Inject
     private CreatePostService service;
 
     @Override
     public void init() throws ServletException {
         super.init();
 
-        service = new CreatePostService();
     }
 
     @Override

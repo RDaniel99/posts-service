@@ -3,6 +3,7 @@ package models;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class PostDetails {
 
@@ -105,4 +106,18 @@ public class PostDetails {
                     this.category, this.createdDate);
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PostDetails that = (PostDetails) o;
+        return Objects.equals(id, that.id) && Objects.equals(postId, that.postId) && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(imagesPaths, that.imagesPaths) && category == that.category && Objects.equals(createdDate, that.createdDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, postId, title, description, imagesPaths, category, createdDate);
+    }
+
 }

@@ -2,6 +2,7 @@ package servlets.formAnswer;
 
 import services.formAnswer.CreateFormAnswerService;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,13 +13,13 @@ import java.io.IOException;
 @WebServlet(value = "/api/formAnswer/create")
 public class CreateFormAnswerServlet extends HttpServlet {
 
+    @Inject
     private CreateFormAnswerService service;
 
     @Override
     public void init() throws ServletException {
         super.init();
 
-        service = new CreateFormAnswerService();
     }
 
     @Override

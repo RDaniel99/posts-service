@@ -6,6 +6,7 @@ import models.FormAnswer;
 import services.Service;
 import services.utils.PathUtils;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -13,11 +14,14 @@ import java.io.PrintWriter;
 
 public class UpdateFormAnswerService implements Service {
 
-    private final FormAnswerRepository repository;
+    @Inject
+    private  FormAnswerRepository repository;
+
+    @Inject
+    private FormAnswerMapper formAnswerMapper;
 
     public UpdateFormAnswerService() {
 
-        this.repository = new FormAnswerRepository();
     }
 
 
@@ -26,7 +30,7 @@ public class UpdateFormAnswerService implements Service {
 
         String path = req.getPathInfo();
 
-        FormAnswer newFormAnswer = FormAnswerMapper.fromJsonToObject(req.getReader());
+        FormAnswer newFormAnswer = formAnswerMapper.fromJsonToObject(req.getReader());
         Integer id = PathUtils.getEntityId(path);
 
         FormAnswer originalFormAnswer = repository.read(id);
@@ -34,6 +38,6 @@ public class UpdateFormAnswerService implements Service {
         newFormAnswer = repository.update(originalFormAnswer, newFormAnswer);
 
         PrintWriter out = resp.getWriter();
-        out.print(FormAnswerMapper.fromObjectToJson(newFormAnswer));
+        out.print(formAnswerMapper.fromObjectToJson(newFormAnswer));
     }
 }

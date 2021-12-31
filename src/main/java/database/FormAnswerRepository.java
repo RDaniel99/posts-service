@@ -3,16 +3,15 @@ package database;
 import exceptions.CrudException;
 import models.FormAnswer;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import static constants.FormAnswerDatabase.*;
 import static exceptions.CrudException.Reason.*;
 
 
 public class FormAnswerRepository implements Database, Repository<FormAnswer> {
+
+    private Connection connection;
 
     @Override
     public FormAnswer create(FormAnswer formAnswer) {
@@ -23,7 +22,7 @@ public class FormAnswerRepository implements Database, Repository<FormAnswer> {
 
             PreparedStatement stmt = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
             stmt.setInt(1, formAnswer.getQuestionId());
-            stmt.setInt(2, formAnswer.getUserId());
+            stmt.setInt(2, formAnswer.getQuestionId());
             stmt.setString(3, formAnswer.getContent());
 
             stmt.executeUpdate();
@@ -40,6 +39,11 @@ public class FormAnswerRepository implements Database, Repository<FormAnswer> {
             //TODO: User Friendly message
         }
         return formAnswer;
+    }
+
+    public void setConnection(Connection connection) {
+
+        this.connection = connection;
     }
 
     @Override

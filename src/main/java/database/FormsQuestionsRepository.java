@@ -3,15 +3,14 @@ package database;
 import exceptions.CrudException;
 import models.FormQuestion;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import static constants.FormQuestionsDatabase.*;
 import static exceptions.CrudException.Reason.*;
 
 public class FormsQuestionsRepository implements Database, Repository<FormQuestion> {
+
+    private Connection connection;
 
     @Override
     public FormQuestion create(FormQuestion formQuestion) {
@@ -37,6 +36,11 @@ public class FormsQuestionsRepository implements Database, Repository<FormQuesti
             //TODO: User Friendly message
         }
         return formQuestion;
+    }
+
+    public void setConnection(Connection connection) {
+
+        this.connection = connection;
     }
 
     @Override

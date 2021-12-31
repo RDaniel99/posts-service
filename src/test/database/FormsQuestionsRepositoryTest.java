@@ -1,6 +1,6 @@
+package database;
 
-import database.FormRepository;
-import models.Form;
+import models.FormQuestion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -9,15 +9,15 @@ import org.mockito.MockitoAnnotations;
 
 import java.sql.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
-public class FormsRepositoryShould {
+class FormsQuestionsRepositoryTest {
 
+    private final Integer FORM_QUESTION_ID = 1;
     private final Integer FORM_ID = 1;
-    private final Integer POST_ID = 1;
 
     @Mock
     Connection connection;
@@ -27,7 +27,7 @@ public class FormsRepositoryShould {
     ResultSet rs;
 
     @InjectMocks
-    FormRepository repository = new FormRepository();
+    FormsQuestionsRepository repository = new FormsQuestionsRepository();
 
     @BeforeEach
     public void setup() throws SQLException {
@@ -40,21 +40,21 @@ public class FormsRepositoryShould {
         when(stmt.getGeneratedKeys()).thenReturn(rs);
         when(stmt.executeQuery()).thenReturn(rs);
         when(rs.next()).thenReturn(true);
-        when(rs.getInt(eq(1))).thenReturn(FORM_ID);
-        when(rs.getInt(eq(2))).thenReturn(POST_ID);
+        when(rs.getInt(eq(1))).thenReturn(FORM_QUESTION_ID);
+        when(rs.getInt(eq(2))).thenReturn(FORM_ID);
     }
 
     @Test
     public void createForm() throws SQLException {
 
         // setup
-        Form form = new Form(null, POST_ID);
+        FormQuestion formQuestion = new FormQuestion.Builder().withId(FORM_QUESTION_ID).withFormId(FORM_ID).build();
 
         // execute
-        form = repository.create(form);
+        formQuestion = repository.create(formQuestion);
 
         // verify
-        assertEquals(FORM_ID, form.getId());
+        assertEquals(FORM_QUESTION_ID, formQuestion.getId());
     }
 
     @Test
@@ -63,10 +63,10 @@ public class FormsRepositoryShould {
         // setup
 
         // execute
-        Form form = repository.read(FORM_ID);
+        FormQuestion formQuestion = repository.read(FORM_QUESTION_ID);
 
         // verify
-        assertEquals(FORM_ID, form.getId());
+        assertEquals(FORM_QUESTION_ID, formQuestion.getId());
     }
 
     @Test
@@ -75,9 +75,10 @@ public class FormsRepositoryShould {
         // setup
 
         // execute
-        Boolean result = repository.delete(FORM_ID);
+        Boolean result = repository.delete(FORM_QUESTION_ID);
 
         // verify
         assertEquals(true, result);
     }
+
 }

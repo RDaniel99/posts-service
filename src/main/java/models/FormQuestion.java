@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Objects;
+
 /**
  * A class that contains the structure and information af a Form
  */
@@ -75,4 +77,16 @@ public class FormQuestion {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FormQuestion that = (FormQuestion) o;
+        return Objects.equals(id, that.id) && Objects.equals(formId, that.formId) && Objects.equals(content, that.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, formId, content);
+    }
 }

@@ -28,6 +28,10 @@ public class PostDetailsRepository implements Database, Repository<PostDetails> 
         connection = Database.getConnection();
     }
 
+    public void setConnection(Connection connection) {
+
+        this.connection = connection;
+    }
     @Override
     public PostDetails create(PostDetails details) {
         try {

@@ -13,13 +13,13 @@ import java.io.IOException;
 @WebServlet(value = "/api/posts/delete")
 public class DeletePostServlet extends HttpServlet {
 
+    @Inject
     private DeletePostService service;
 
     @Override
     public void init() throws ServletException {
         super.init();
 
-        service = new DeletePostService();
     }
 
     @Override

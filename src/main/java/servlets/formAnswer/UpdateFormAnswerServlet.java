@@ -1,8 +1,8 @@
 package servlets.formAnswer;
 
-import services.formAnswer.ReadFormAnswerService;
 import services.formAnswer.UpdateFormAnswerService;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,13 +13,12 @@ import java.io.IOException;
 @WebServlet(value = "/api/formAnswer/update/*")
 public class UpdateFormAnswerServlet extends HttpServlet {
 
+    @Inject
     private UpdateFormAnswerService service;
 
     @Override
     public void init() throws ServletException {
         super.init();
-
-        service = new UpdateFormAnswerService();
     }
 
     @Override

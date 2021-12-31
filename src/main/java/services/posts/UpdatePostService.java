@@ -6,7 +6,6 @@ import mappers.PostMapper;
 import models.Post;
 import services.Service;
 
-import javax.ejb.Singleton;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,11 +14,14 @@ import java.io.PrintWriter;
 
 public class UpdatePostService implements Service {
 
+    @Inject
     private PostsRepository repository;
+
+    @Inject
+    private PostMapper postMapper;
 
     public UpdatePostService() {
 
-        this.repository = new PostsRepository();
     }
 
 
@@ -29,7 +31,7 @@ public class UpdatePostService implements Service {
         PrintWriter out = resp.getWriter();
 
         // TODO: Add validation
-        Post newPost = PostMapper.fromJsonToObject(req.getReader());
+        Post newPost = postMapper.fromJsonToObject(req.getReader());
         Integer postId = Integer.parseInt(req.getParameter("id"));
 
         Post originalPost = repository.read(postId);
@@ -44,6 +46,6 @@ public class UpdatePostService implements Service {
         // TODO: This should be part of servlet, not service
         // TODO: To do in future, not now
 
-        out.print(PostMapper.fromObjectToJson(newPost));
+        out.print(postMapper.fromObjectToJson(newPost));
     }
 }

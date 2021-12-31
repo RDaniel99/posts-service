@@ -3,11 +3,10 @@ package services.posts.details;
 import database.PostDetailsRepository;
 import exceptions.CrudException;
 import mappers.PostDetailsMapper;
-import mappers.PostMapper;
-import models.Post;
 import models.PostDetails;
 import services.Service;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -15,11 +14,14 @@ import java.io.PrintWriter;
 
 public class UpdatePostDetailsService implements Service {
 
+    @Inject
     private PostDetailsRepository repository;
+
+    @Inject
+    private PostDetailsMapper postDetailsMapper;
 
     public UpdatePostDetailsService() {
 
-        repository = new PostDetailsRepository();
     }
 
 
@@ -29,7 +31,7 @@ public class UpdatePostDetailsService implements Service {
         PrintWriter out = resp.getWriter();
 
         // TODO: Add validation
-        PostDetails newPostDetails = PostDetailsMapper.fromJsonToObject(req.getReader());
+        PostDetails newPostDetails = postDetailsMapper.fromJsonToObject(req.getReader());
         Integer postDetailsId = Integer.parseInt(req.getParameter("id"));
 
         PostDetails originalPostDetails = repository.read(postDetailsId);
@@ -44,6 +46,6 @@ public class UpdatePostDetailsService implements Service {
         // TODO: This should be part of servlet, not service
         // TODO: To do in future, not now
 
-        out.print(PostDetailsMapper.fromObjectToJson(newPostDetails));
+        out.print(postDetailsMapper.fromObjectToJson(newPostDetails));
     }
 }

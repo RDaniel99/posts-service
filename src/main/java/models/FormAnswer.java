@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Objects;
+
 /**
  * A class that represents the structure and information for a form answer
  */
@@ -46,6 +48,7 @@ public class FormAnswer {
         this.id = id;
     }
 
+
     public Integer getId() {
         return id;
     }
@@ -89,4 +92,16 @@ public class FormAnswer {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FormAnswer that = (FormAnswer) o;
+        return Objects.equals(id, that.id) && Objects.equals(questionId, that.questionId) && Objects.equals(userId, that.userId) && Objects.equals(content, that.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, questionId, userId, content);
+    }
 }

@@ -1,8 +1,8 @@
 package servlets.forms;
 
 import services.forms.DeleteFormService;
-import services.forms.ReadFormService;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,13 +13,13 @@ import java.io.IOException;
 @WebServlet(value = "/api/forms/delete/*")
 public class DeleteFormServlet extends HttpServlet {
 
+    @Inject
     private DeleteFormService service;
 
     @Override
     public void init() throws ServletException {
         super.init();
 
-        service = new DeleteFormService();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package servlets.posts.details;
 
-import services.posts.UpdatePostService;
 import services.posts.details.UpdatePostDetailsService;
 
 import javax.inject.Inject;
@@ -14,13 +13,12 @@ import java.io.IOException;
 @WebServlet(value = "/api/posts/details/update")
 public class UpdatePostDetailsServlet extends HttpServlet {
 
+    @Inject
     private UpdatePostDetailsService service;
 
     @Override
     public void init() throws ServletException {
         super.init();
-
-        service = new UpdatePostDetailsService();
     }
 
     @Override
